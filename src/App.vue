@@ -1,11 +1,11 @@
-<script setup></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app">
+    <!-- Ici tu peux mettre un header/footer global -->
+    <router-view /> 
+    <!-- Ici Vue Router affichera Login.vue ou une autre page -->
+  </div>
 </template>
 
-<style scoped></style>
+<script setup>
+// rien à importer ici, Vue Router s'occupe d'afficher Login.vue
+</script>
