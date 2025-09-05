@@ -97,13 +97,15 @@
 
 <script setup>
 import { ref } from "vue"
+import router from "@/router"
+import { useAuthStore } from "@/store/authStore.js"
 
 const email = ref("")
 const password = ref("")
-const remember = ref(false)
 const loading = ref(false)
 const error = ref(null)
-const user = ref(null)
+
+const { login } = useAuthStore()
 
 const handleLogin = async () => {
   loading.value = true
@@ -112,9 +114,7 @@ const handleLogin = async () => {
   try {
     const response = await fetch("http://localhost:8000/api/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
         email: email.value,
@@ -124,19 +124,14 @@ const handleLogin = async () => {
 
     const data = await response.json()
 
-    if (!response.ok) {
-      throw new Error(data.error || "Erreur de connexion")
-    }
+    if (!response.ok) throw new Error(data.error || "Erreur de connexion")
 
-    user.value = data.user
-    console.log("✅ Connecté :", data.user)
+    // 🔑 sauvegarde dans le store réactif
+    login(data.user)
 
-    // Redirection vers le dashboard
-    // router.push("/dashboard")
-
+    router.push("/dashboard")
   } catch (err) {
     error.value = err.message
-    console.error("❌ Erreur login:", err)
   } finally {
     loading.value = false
   }

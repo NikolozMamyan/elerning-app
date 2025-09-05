@@ -1,11 +1,28 @@
 <template>
   <div id="app">
-    <!-- Ici tu peux mettre un header/footer global -->
-    <router-view /> 
-    <!-- Ici Vue Router affichera Login.vue ou une autre page -->
+    <Sidebar v-if="isAuthenticated()" />
+    <div class="main-content">
+      <Topbar v-if="isAuthenticated()" />
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script setup>
-// rien à importer ici, Vue Router s'occupe d'afficher Login.vue
+import Sidebar from "@/components/Sidebar.vue"
+import Topbar from "@/components/Topbar.vue"
+import { useAuthStore } from "@/store/authStore.js"
+
+const { isAuthenticated } = useAuthStore()
 </script>
+
+<style>
+#app {
+  display: flex;
+}
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>
